@@ -113,3 +113,46 @@
   
   ![image](https://user-images.githubusercontent.com/84333525/138920726-e70ba443-ba6d-4a27-b90b-99440bf7ba4d.png)
 
+* Al correr los test obtenemos un error en este punto debido a que debemos agregar la función para agregar usuarios *admin.py*
+  - Para ello podemos usar add_fields que es un preset que tiene Django en su documentación se encuentra.
+  
+  ![image](https://user-images.githubusercontent.com/84333525/138939392-699d40eb-053d-438e-b042-fac0f1f48c0f.png)
+
+## CREACION DE ENDPOINTS PARA MANEJAR USUARIOS
+* Esto nos va a permitir CRUD de usuarios y todo lo que queramos hacer con ellos ....
+* Hasta el momento lo que hemos logrado es la administración en si de los usuarios, para su gestión crearemos una app user, con la cual van interactuar las demás apps que tengamos en el proyecto.
+* De la nueva app user que creamos, podemos eliminar varios archivos que queremos mantener en core, como son los models.py, migrations.py, test.py en caso de este creamos una carpeta tests y dentro es que crearemos los test, ...etc
+* Luego adicionamos nuestra app a los settings.py de nuestra app:
+
+![image](https://user-images.githubusercontent.com/84333525/138943594-83a88d30-085a-44c3-8c64-60039f2d9cc3.png)
+
+### API PARA CREAR USUARIOS
+* Como estamos programando basado en pruebas primero creamos el test para crear usuario. Esto lo hacemos en el archivo *test_user_api.py*
+* Después de hacer las importanciones necesarias que veremos en las próximas imágenes
+* Creamos una función helper para nuestro url
+* Importante --> Dividiremos los test para más organización en los públicos y privados. Por ejemplo uno público podría ser la creación de un usuario y uno privado puede ser un update del usuario.
+
+1. Creamos el serializador para el usuario *serializer.py*
+   
+   ![image](https://user-images.githubusercontent.com/84333525/138951871-d1c0c25e-24b5-4bd1-9051-447b1505f63b.png)
+
+2. Creamos la view en *views.py*
+
+  ![image](https://user-images.githubusercontent.com/84333525/138952372-048b948f-398a-476b-8c6d-4c5d32e0a9c7.png)
+
+3. Creamos la url con la que vamos acceder a la view en el archivo *urls.py* (tenemos que crearlo)
+    - Siempre que definismos urls tenemos que decir para que app, por eso la variable app_name
+
+   ![image](https://user-images.githubusercontent.com/84333525/138952979-92fa423b-742d-439b-ac5b-1ecdfd3f82c9.png)
+
+4. Creamos la url en el archivo *urls.py* del proyecto.
+
+  ![image](https://user-images.githubusercontent.com/84333525/138954895-b58c6659-862d-4989-8a2f-a0f16859fe72.png)
+
+### AUTENTICACION POR TOKEN
+* La autenticación que utilizaremos es por token, así verificamos cuando el usuario haga request que es el usuario ...
+1. Adicionamos la url
+
+![image](https://user-images.githubusercontent.com/84333525/138955871-ea5594e7-fb2c-422a-811d-b646ae78d953.png)
+
+

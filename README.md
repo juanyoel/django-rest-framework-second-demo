@@ -155,4 +155,144 @@
 
 ![image](https://user-images.githubusercontent.com/84333525/138955871-ea5594e7-fb2c-422a-811d-b646ae78d953.png)
 
+### CREAR API
+1. Debemos serializar el token de autenticación, lo usamos para autenticar nuestros request.
+2. Importamos authenticate:
+
+![image](https://user-images.githubusercontent.com/84333525/138975215-8e7acfa8-dbf7-4c0f-8051-69a0035d2005.png)
+
+A esto le pasamos un usuario y una contraseña y nos ayuda con el proceso de autenticación
+
+![image](https://user-images.githubusercontent.com/84333525/138975347-bc0a7f02-74a7-4828-b43e-e9198cd80fc8.png)
+
+(Internacionalización)
+
+3. Luego creamos la clase y código necesario:
+
+![image](https://user-images.githubusercontent.com/84333525/138975849-8c9a80ae-ffea-4d53-8ac9-7761d30230cb.png)
+
+### CREAMOS EL VIEW PARA LA AUTENTICACION
+
+![image](https://user-images.githubusercontent.com/84333525/138976273-3ef1fde1-c46f-4e0d-bbdf-410d20981e45.png)
+
+### CREAMOS LA URL
+
+![image](https://user-images.githubusercontent.com/84333525/138977516-cf0128c4-b665-4195-824f-c2f5f2a13dc0.png)
+
+### AGREGAMOS EL MANAGE USER ENDPOINT
+* Este endpoint va a permitir al usuario que ya ha sido autenticado el poder actualizar su perfil, cambiar su nombre, email y contraseña.
+
+1. Creamos los test en el archivo *test_user_api.py*, la clase dónde estarán los métodos para testear los endpoints privados.
+
+  - ![image](https://user-images.githubusercontent.com/84333525/138977954-db9e0df8-477e-4e79-a7ed-a7850c59fe0f.png)
+  
+  - ![image](https://user-images.githubusercontent.com/84333525/138978461-c378f721-ec7e-4683-b2e7-2ba8f93a12ec.png)
+
+2. Creamos todos los tests
+
+  ![image](https://user-images.githubusercontent.com/84333525/138979558-b0e432d2-0584-4ece-8ced-c356d9dbcb57.png)
+
+### PASAMOS A CREAR NUESTRO MANAGE USER ENDPOINT
+* En la vista hacemos nuevas importaciones
+
+![image](https://user-images.githubusercontent.com/84333525/138979778-3e51b089-cd34-4ddb-90c9-460925ac7c7a.png)
+
+* Creamos el APIView correspondiente para manejar la actualización de usuarios
+  
+![image](https://user-images.githubusercontent.com/84333525/138980334-8a02f8cc-bc97-4e26-a9d3-9cf9ea01542e.png)
+
+* Actualizamos nuestr user serializer y le adicionamos el método update
+
+![image](https://user-images.githubusercontent.com/84333525/138980842-cdcfe2aa-2aee-45ce-94cc-e22ee8f7bf72.png)
+
+* Agregamos la url para tener accesos a la view
+
+![image](https://user-images.githubusercontent.com/84333525/138980950-b16d9f11-6ebb-4567-a1d1-e51a7482ea1c.png)
+
+********************************************************************************************************************************************************************************
+
+# CREAMOS APP PARA LAS RECETAS
+* *py.exe .\manage.py startapp recipe*
+* Eliminamos los archivos que no vamos a necesitar (admin, migrations, models)
+* Adicionamos la nueva app a las installed_apps en settings
+
+## CREACION DEL TEST
+* Luego definimos las pruebas test para las nuevas funcionalidades
+  - Antes creamos una función con el propósito de crear un usuario de pruebas para las nuevas funcionalidades.
+
+  ![image](https://user-images.githubusercontent.com/84333525/138988424-01cff513-915b-473b-afbb-06fd65de32ec.png)
+
+  - Primer test
+  ![image](https://user-images.githubusercontent.com/84333525/138989697-cfb606fa-7750-4ebf-a256-98e82cfbe65a.png)
+
+* Luego que corremos el test verificamos que nos dice que no tenemos un Tag creado por lo que pasamos a crear el modelo.
+
+## CREACION DEL MODELO
+* Importamos los settings
+
+![image](https://user-images.githubusercontent.com/84333525/138990051-d8c50dc5-013e-4d12-897e-a84105630b80.png)
+
+* Creamos la clase (modelo) Tag
+  - Vamos a crear una relación one to one porque queremos vincular un tag con un único usuario
+
+![image](https://user-images.githubusercontent.com/84333525/138990437-97dded6c-1fe3-4c6a-9d84-6a84a01fbc32.png)
+
+* Registramos el modelo en el panel de admin:
+
+![image](https://user-images.githubusercontent.com/84333525/138990589-5f0ac0e4-dea5-4654-a181-130b79f5cd9e.png)
+
+* Creamos y corremos migración como cada vez que hacemos cambios en los modelos.
+
+## CREACION DEL API QUE LISTA LOS TAGS
+* Recordar que como estamos desarrollando basado en pruebas, primero tenemos que crear las pruebas antes de crear las funcionalidades
+* Creamos el archivo *test_tags_api.py* dónde escribiremos los tests.
+* Realizamos todas las importaciones con las que estaremos trabajando
+
+![image](https://user-images.githubusercontent.com/84333525/138993375-755786a1-35cb-4f81-a2fa-9c1f917ac0dc.png)
+
+* Estaremos usando un viewset para trabajar la lista
+* Creamos las pruebas necesarias:
+
+![image](https://user-images.githubusercontent.com/84333525/139000338-816fa417-c0b1-4f4e-b1af-047dcac59098.png)
+
+NOTA IMPORTANTE: PROFUNDIZAR EN LOS TEST
+
+* Al correr las pruebas definidas salta un error, debido a que no hemos definido el serializer para los tags.
+
+## CREACION DEL SERIALIZER
+* Creamos el archivo *serializers.py* en la app.
+* Realizamos las importaciones pertinentes
+
+![image](https://user-images.githubusercontent.com/84333525/139000614-190c9085-b374-4261-a8a7-7ece032323e1.png)
+
+* Realizamos el serializador
+
+![image](https://user-images.githubusercontent.com/84333525/139000855-0fa7110c-8eed-497f-add0-3fea1f2e8447.png)
+
+## CREACION DE LA VIEW
+* Hacemos las importaciones necesarias
+
+![image](https://user-images.githubusercontent.com/84333525/139001596-b2d96dd3-5939-41ff-869c-f473d7d6cd6b.png)
+
+* Creamos el ViewSet:
+
+![image](https://user-images.githubusercontent.com/84333525/139001839-593d2ed1-a443-4f05-ace7-be1c123db456.png)
+
+## ADICIONAR URL
+* Recordar que tenemos que crear manualmente el archivo *urls.py* de nuestra app
+* Importamos lo que vamos a necesitar
+* Registramos el viewset
+* Agregamos la ruta
+
+![image](https://user-images.githubusercontent.com/84333525/139002248-09e4ae1d-2b7c-4e1d-8e2e-857bd49594a3.png)
+
+## ADICIONAR URL EN EL ARCHIVO PRINCIPAL
+
+![image](https://user-images.githubusercontent.com/84333525/139002345-fc5f080e-57f0-45ee-ac59-1dc674bcfc88.png)
+
+## MODIFICAMOS EL VIEWSET
+
+![image](https://user-images.githubusercontent.com/84333525/139002548-f24b8e97-7f95-480f-aeaa-e99c24560e9d.png)
+
+Este método *def get_queryset(self):* nos va a permitir solo retornar los tags del usuario que los está reqieriendo.
 

@@ -296,3 +296,58 @@ NOTA IMPORTANTE: PROFUNDIZAR EN LOS TEST
 
 Este método *def get_queryset(self):* nos va a permitir solo retornar los tags del usuario que los está reqieriendo.
 
+![image](https://user-images.githubusercontent.com/84333525/139258903-d62b9d7d-ece0-4443-bab7-ebec734d261d.png)
+
+## ADICIONAR TAGS
+* Recordemos que estamos trabajando basado en pruebas, por lo que antes de adicionar nuevos Tags debemos crear las pruebas necesarias, para esto nos volvemos a ubicar en el archivo *test_tags_api.py*
+* Adicionamos las pruebas correspondientes a la creación de los Tags (cuando es correcto y cuando no es correcto).
+
+![image](https://user-images.githubusercontent.com/84333525/139261664-8c8ad95a-534d-4c5b-9366-f0faa07d15b5.png)
+
+* Creamos ahora el soporte para crear realmente nuestros Tags
+  - Para ello vamos a crear primero la vista *(views.py)*
+  - Primero heredamos de una nueva clase y se lo pasamos como parámetro a nuestro viewset, esto nos permitirá "crear", como vemos en la siguiente imagen:
+  
+    ![image](https://user-images.githubusercontent.com/84333525/139262305-aa3da2c8-6ffb-4ed7-a05a-52cf2fc63317.png)
+
+  - Luego definimos la función que nos permitirá crear un nuevo tag
+
+    ![image](https://user-images.githubusercontent.com/84333525/139263070-f596dfed-3c0a-4825-a1ed-c26e63ed0fa0.png)
+
+## CREACION DE API PARA LOS INGREDIENTES
+
+### CREACION DEL TEST DEL MODELO
+* El primer paso como hemos hecho antes es crear el modelo de los *ingredientes* para ello lo primero es crear el test del modelo, recordemos que por definición definimos los modelos en al app *core* entonces para definir los test nos ubicamos en el archivo *test_models.py* y escribimos nuestro código:
+
+![image](https://user-images.githubusercontent.com/84333525/139264929-c06378c6-2982-4400-a6b9-0b4a068dbba4.png)
+
+* Al correr el test, obtendremos un error como el siguiente, estos errores no los he puesto antes pero son comunes al momento de crear todos los test, y es debido a que en ese momento aún no se han definido los modelos que se están testeando.
+
+![image](https://user-images.githubusercontent.com/84333525/139265521-0e86f07c-7554-4755-b0ec-555ba3c62b8f.png)
+
+### CREACION DEL MODELO
+* Como ya he mencionado tenemos todos los modelos en el archivo *models.py* de la app *core*. Nos ubicamos en el para escribir el código correspondiente.
+  
+  ![image](https://user-images.githubusercontent.com/84333525/139266376-64d2ff69-acae-47e1-b72e-752429d630a1.png)
+
+### ACCESO AL PANEL DE ADMINISTRACION
+* Como ya hemos hecho antes el próximo paso es poder incluir nuestro modelo en el panel de administración para poder tener un control más sencillo de las acciones que se pueden realizar sobre el mismo
+* Para ello nos dirijimos al archivo *admin.py* de la app *core* e incluimos el siguiente código:
+
+![image](https://user-images.githubusercontent.com/84333525/139266847-e9044fec-9098-4487-bda6-ea907594f250.png)
+
+### MIGRACIONES BD
+* Como es sabido luego de crear o modificar los modelos, debemos actualizar nuestra BD, para ello creamos y corremos las migraciones como hemos hecho antes.
+  - *python manage.py makemigrations*
+  - *python manage.py migreate*
+
+### LISTAR INGREDIENTES
+* Para listar los ingredientes primero realizamos los test correspondientes
+* Creamos el archivo *test_ingredientes_api.py*
+  - Realizamos las importaciones necesarias
+
+![image](https://user-images.githubusercontent.com/84333525/139268712-37bcd2d0-5a02-4845-adc3-50d1de8ac676.png)
+
+- Definimos las urls para los ingredientes: *INGREDIENTS_URL = reverse('recipe:ingredient-list')*
+- Creamos el API con los métodos de accesos que son públicos y el API con los métodos de acceso privados.
+

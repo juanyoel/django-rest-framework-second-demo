@@ -351,3 +351,43 @@ Este método *def get_queryset(self):* nos va a permitir solo retornar los tags 
 - Definimos las urls para los ingredientes: *INGREDIENTS_URL = reverse('recipe:ingredient-list')*
 - Creamos el API con los métodos de accesos que son públicos y el API con los métodos de acceso privados.
 
+![image](https://user-images.githubusercontent.com/84333525/139286099-b8db3358-aba4-4656-b2df-0b5ff1c4c292.png)
+
+### CREAR EL SERIALIZADOR
+* Para ello como ya sabemos, nos ubicamos en el archivo *serializers.py*
+* Importamos el modelo Ingrediente y creamos el serializador
+
+![image](https://user-images.githubusercontent.com/84333525/139286938-d0c7d88f-c3f0-47f9-872c-44305a986ae4.png)
+
+### CREAR LA VISTA
+* El próximo paso lógico luego de creado el serializdor es crear la vista, para ello nos ubicamos en nuestro archivo *views.py*
+* Importamos el modelo Ingrediente
+* Creamos el viewset, tener en cuenta lo siguiente:
+  - Cada vez que creamos una vista necesitaremos definirle algunos parámetros que no podemos olvidar:
+    * authentication_classes --> defino la vía que se está usando en el proyecto para manejar la autenticación
+    * permission_classes --> como se manejan los permisos para acceder a los diferentes endpoints
+    * queryset --> generalmente cuando debemos listar los objetos siempre debemos ponerlo
+    * serializer_class --> es de lo más importante ya que es lo que nos permite interpretar la data que viene en request y transformarla a un objeto de la BD
+
+![image](https://user-images.githubusercontent.com/84333525/139289235-99cd4a19-c1f3-4147-9a0c-973dc9351670.png)
+
+### CREAR LA URL ASOCIADA A LA VISTA
+* Para ello como ya sabemos nos posicionamos en el archivo *urls.py*
+* Registramos la url en el router y listo
+
+![image](https://user-images.githubusercontent.com/84333525/139289665-d8c628ae-1409-4387-9cb5-b86eb5bc941e.png)
+
+### ADICIONAMOS FUNCIONALIDAD PARA CREAR NUEVOS INGREDIENTES
+* Como toda nueva funcionalidad sabemos que necesitamos primero crear las pruebas necesarias por lo que nos posicionamos en el archivo *test_ingredients_api.py*
+* Primero creamos la prueba para probar que la creación del inrgediente es success
+  - Para este test primero definimos un ingrediente (payload)
+  - Cargamos el payload a través de la url
+  - Es a través de un método post para poder enviar el payload
+  - Chequeamos si el ingrediente existe y si existe es lo que necesitamos porque se va haber creado
+* Segundo creamos el test para probar comportamiento cuando estamos creando un ingrediente inválido
+  - Para este test primero definimos un ingrediente (payload)
+  - Cargamos el payload a través del url
+  - Chequeamos que si el ingrediente no tiene nombre, retorne un bad request
+  
+  ![image](https://user-images.githubusercontent.com/84333525/139295292-d0e41b2e-1a0a-4050-b681-c45b415e549e.png)
+

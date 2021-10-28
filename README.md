@@ -391,3 +391,44 @@ Este método *def get_queryset(self):* nos va a permitir solo retornar los tags 
   
   ![image](https://user-images.githubusercontent.com/84333525/139295292-d0e41b2e-1a0a-4050-b681-c45b415e549e.png)
 
+* Tercero necesitamos crear el viewset, por lo que nos posicionamos en el archivo *views.py*
+  - Primero heredamos de *mixins.CreateModelMixin*
+
+  ![image](https://user-images.githubusercontent.com/84333525/139324195-333d79e1-ce2c-4340-aa24-e4d94fa0e338.png)
+
+  - Segundo creamos la función para crear ek ingrediente 
+
+  ![image](https://user-images.githubusercontent.com/84333525/139324515-35776cce-d394-4629-bdbe-6c41c7b37376.png)
+
+### REFACTORIZACION A LO BESTIA (MUY BUENO VER CURSO 4H13M)
+* No voy hacer la refactorización para no perderme con las explicaciones e imagenes anteriores, pero si que es importante ver esa refactorización muy buena.
+
+## CREAR RECIPE (LA RECETA)
+* Como estamos programando basado en pruebas lo primero es crear los test correspondientes al modelo de recipe, para ello nos ubicamos en el archivo *test_model.py*
+* Creamos el test:
+  - el cual tendrá una receta de pruebas conformada por
+    * el usurario que creo la receta
+    * El titulo de la receta
+    * el tiempo de cocción
+    * precio
+ 
+  ![image](https://user-images.githubusercontent.com/84333525/139326651-7c0a7fc2-b462-4e15-9e65-17e2fd1d8cd4.png)
+
+## CREAR MODELO
+* Una vez creado el test y corrido, obtenemos el error normal, debido a que necesitamos crear el modelo correspondiete Recipe
+* Para ello nos posicionamos en el archivo *models.py*
+* Creamos el modelo, importante fijarse en las relaciones many to many que tienen las recetas con los tags y con los ingredientes
+
+![image](https://user-images.githubusercontent.com/84333525/139328456-bc9aa4b9-8e09-4296-95de-6dd0a4ad0b70.png)
+
+## AGREGAR EL MODELO AL PANEL DE ADMIN
+* Luego de creado el modelo pasamos a registrarlo en el archivo *admin.py* para así tener un mayor control de las acciones que podemos realizar sobre el.
+
+![image](https://user-images.githubusercontent.com/84333525/139332087-c38e2168-8408-45ca-97e1-511d2b9e03e5.png)
+
+## CREAMOS Y CORREMOS LAS MIGRACIONES
+* *python.exe manage.py makemigrations*
+* *python.exe manage.py migrate*
+
+
+

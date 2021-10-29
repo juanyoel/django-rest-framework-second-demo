@@ -414,21 +414,120 @@ Este método *def get_queryset(self):* nos va a permitir solo retornar los tags 
  
   ![image](https://user-images.githubusercontent.com/84333525/139326651-7c0a7fc2-b462-4e15-9e65-17e2fd1d8cd4.png)
 
-## CREAR MODELO
+### CREAR MODELO
 * Una vez creado el test y corrido, obtenemos el error normal, debido a que necesitamos crear el modelo correspondiete Recipe
 * Para ello nos posicionamos en el archivo *models.py*
 * Creamos el modelo, importante fijarse en las relaciones many to many que tienen las recetas con los tags y con los ingredientes
 
 ![image](https://user-images.githubusercontent.com/84333525/139328456-bc9aa4b9-8e09-4296-95de-6dd0a4ad0b70.png)
 
-## AGREGAR EL MODELO AL PANEL DE ADMIN
+### AGREGAR EL MODELO AL PANEL DE ADMIN
 * Luego de creado el modelo pasamos a registrarlo en el archivo *admin.py* para así tener un mayor control de las acciones que podemos realizar sobre el.
 
 ![image](https://user-images.githubusercontent.com/84333525/139332087-c38e2168-8408-45ca-97e1-511d2b9e03e5.png)
 
-## CREAMOS Y CORREMOS LAS MIGRACIONES
+### CREAMOS Y CORREMOS LAS MIGRACIONES
 * *python.exe manage.py makemigrations*
 * *python.exe manage.py migrate*
 
+### CREAR PRUEBAS PARA LISTAR LAS RECETAS
+* Primero creamos las pruebas para listar las recetas, similar a todo lo que hemos hecho antes.
+* Para ello vamos a nuestra carpeta de tests y agregamos el archivo *test_recipe_api.py*
+* Realizamos todas las importaciones necesarias, las mimas que en caso anteriores
 
+![image](https://user-images.githubusercontent.com/84333525/139460041-16ff2b87-7820-4a5a-acf3-0d276473efde.png)
+
+* Definimos el url de nuestra receta:
+
+![image](https://user-images.githubusercontent.com/84333525/139460241-a151b6d1-7f44-499c-b4c8-426fdba45cf4.png)
+
+* Creamos una función que nos retorne una receta de prueba para usarla en nuestros test
+
+![image](https://user-images.githubusercontent.com/84333525/139460816-cfc5e6b5-ad85-482c-8d77-0aa684fb44bc.png)
+
+* Creamos las clases PUBICA Y PRIVADA, en la que colocaremos el código de nuestros test en correspondencia
+* En la clase Publica como la Privada creamos el setUp ... esta función siempre es obligatoria, tener en cuenta que siempre obligamos al usuario a autenticarse.
+
+![image](https://user-images.githubusercontent.com/84333525/139462989-8ce3bf70-a79c-4cd0-b5af-3ee39f5bc42e.png)
+
+* Como podemos ver en la función setUp creamos el usuario de prueba para los test, esto siempre se debe hacer y en el test primero creamos dos recetas de prueba, hacemos la llamada al api mediante el get, luego hago una llamada para obtener todas las recipes las serializo y compruebo que la llamada haya retornado un status 200.
+* Creamos el test para listar las recetas por usuario, al correr el mismo obvio obtenemos el error de que no tenemos el serializer definido que es lo que haremos en el próximo paso.
+
+![image](https://user-images.githubusercontent.com/84333525/139464819-590cdfdd-97e3-4398-8ac0-40da6734171c.png)
+
+### CREAMOS EL SERIALIZADOR
+* Este ejemplo es de gran importancia para el estudio ya que debemos recordar que tenemos una relación many to many, por lo que debemos serializar los campos many to many haciendo un *queryset* a todos los ingredientes y todos los tags, primero vamos hacerlo a los ingredientes y luego lo mismo a los tags:
+ 
+ ![image](https://user-images.githubusercontent.com/84333525/139466291-9d44f493-a367-4e56-823c-5f814399c84d.png)
+
+### CREAR LAS VISTAS
+* Luego de creado el serializer pasamos a crear las vistas, viewsets. Para ello nos ubicamos en el archivo *views.py*
+* Importamos la clase Recipe
+
+![image](https://user-images.githubusercontent.com/84333525/139466644-eba8f7e4-f42f-48bd-9cb5-13c65223b625.png)
+
+![image](https://user-images.githubusercontent.com/84333525/139467627-4f0ed400-6e76-4b2b-8e39-731bad843a93.png)
+
+### CREAR URL
+* El próximo paso es vincular la vista con el url para poder tener acceso a la misma, para ello nos ubicamos en ele archivo *urls.py*
+* Agregamos la url al router y listo
+
+![image](https://user-images.githubusercontent.com/84333525/139467913-40df6af5-8bfd-4fd3-a687-07f989e5b53b.png)
+
+
+## FUNCIONALIDAD PARA OBTENER DETALLES DE LA RECETA
+
+### CREAR TEST 
+* Como ya sabemos primero debemos programar los test de la nueva funcionalidad por lo que para ello nos ubicamos en el archivo *test_recipe_api.py*
+* Como recordamos la receta tiene ingredientes y tags, por lo que el primer paso es importar los modelos desde *core* y además importar un nuevo serializer que aún no he creado
+  *RecipeSerializer*
+* Luego creamos un ingrediente y un tag de ejemplo.
+
+![image](https://user-images.githubusercontent.com/84333525/139471048-88bc4e73-9703-4f3b-a1c2-8ba6026b1316.png)
+
+* El próximo paso es crear una función que te retorne la url de detalles:
+
+![image](https://user-images.githubusercontent.com/84333525/139471191-5a5c0f80-e8d0-4dc5-b65f-0c4c5b547df1.png)
+
+* Creamos el test:
+
+![image](https://user-images.githubusercontent.com/84333525/139472491-dfb08e53-8514-4964-a9b6-3cbd72b32a4d.png)
+
+### CREAR SERIALIZER
+* Como ya sabemos al correr las pruebas obtenemos un error debido a que no hemos implementado el serializador necesario para la función, para ello nos ubicamos en el archivo *serializers.py*
+
+![image](https://user-images.githubusercontent.com/84333525/139486798-07a21bb0-7183-4436-a1bc-e5ccddffef16.png)
+
+Como heredamos de RecipeSerializer solo debemos serializar los objetos con los que tenemos relaciones Ingredientes y Tags
+
+### CREAR VISTA
+* Importante , tenemos que tener en cuenta que ahora para las recetas tenemos dos serializadores por lo que debemos hacer ahora es definir una función que nos retorne el serializador indicado:
+
+![image](https://user-images.githubusercontent.com/84333525/139487520-1479d8af-229d-4b80-907d-75c2e4beee10.png)
+
+## FUNCIONALIDAD PARA CREAR UNA RECETA
+
+### CREAR TEST
+* Lo primero es crear los test para adicionar cualquier funcionalidad, en este caso vamos a *crear una receta*, para ello os ubicamos en el archivo *test_recipe_api.py*
+* Creamos el test:
+
+![image](https://user-images.githubusercontent.com/84333525/139488661-6c3f995c-923e-4157-9bd3-cb1244a45589.png)
+
+- Creamos nuestro payload como siempre se debe hacer cuando vamos ha realizar un post.
+- Hacemos la llamada al api y guardamos la respuesta en la variable res.
+- Luego comprobamos que el api retorne un status 201 created.
+- Obtenemos la receta creada de la BD.
+- Por último obtenemos los atributos por cada clave de nuestra receta **ESTUDIAR ESTE CODIGO**
+
+* Creamos el resto de los tests:
+
+![image](https://user-images.githubusercontent.com/84333525/139490810-10e49d38-1913-4c07-b97d-9295c6d3022f.png)
+
+### CREAR RECETAS -- VIEWS
+* Para ello lo primero es crear la vista por lo que nos ubicamos en el archivo *views.py*
+* Creamos la función *perform_create*
+
+![image](https://user-images.githubusercontent.com/84333525/139492057-48e68245-f94e-47d8-91c3-f9a882e60c8d.png)
+
+Con esto hecho ya podemos correr los test y deberían estar OK.
 

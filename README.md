@@ -531,3 +531,115 @@ Como heredamos de RecipeSerializer solo debemos serializar los objetos con los q
 
 Con esto hecho ya podemos correr los test y deberían estar OK.
 
+# TRABAJO CON IAGENES
+## PILOW
+* Para el trabajo con imágenes debemos instalar un paquete llamado Pilow: *pip install pillow*
+* Nos ubicamos en el archivo *settings.py* dónde se encuentra la línea *STATIC_URL = '/static/'* y agregamos la siguiente:
+
+   ![image](https://user-images.githubusercontent.com/84333525/139673607-6ef7ae29-5e61-45b4-90dc-4d789d1baeed.png)
+
+* Luego necesitamos configurar el archivo *urls.py* y para ello, primero debmos hacer las importaciones necesarias:
+  
+  ![image](https://user-images.githubusercontent.com/84333525/139674026-4a931744-4b3a-4d03-baf2-10df9adcfb4f.png)
+
+* Modificamos el url patterns:
+  
+  ![image](https://user-images.githubusercontent.com/84333525/139674379-f6b7c493-172b-46c1-aace-0a599ff184f8.png)
+
+* Luego pasamos a implementar la funcionalidad de las imágenes, para ello modificamos el modelo del recipe.
+* Como toda nueva funcionalidad primero creamos el test indicado.
+  * Tener en cuenta que lo que hacemos al subir una imagen para un recipe es que se modifica el recipe por lo que el método a utilizar para ello es el PATCH.
+  * Para poder usar este método en los test hacemos la siguiente importación:
+
+    ![image](https://user-images.githubusercontent.com/84333525/139675375-ba64a805-6e83-43e1-bdf1-7ef7b6808a16.png)
+
+* Luego creamos el test:
+
+![image](https://user-images.githubusercontent.com/84333525/139676223-5939eec8-3854-4359-96c1-53407ab4b057.png)
+
+### MODIFICAMOS EL MODELO
+* Primero realizamos las importaciones necesarias para el trabajo con imágenes:
+
+  ![image](https://user-images.githubusercontent.com/84333525/139677439-356a71d8-2f62-44bc-83b1-f8a468ab3790.png)
+  
+* Segundo creamos una función que nos retornará el path a dónde se encuentran las imágenes.
+
+![image](https://user-images.githubusercontent.com/84333525/139678470-cb471985-b895-4c3c-904b-627da894f910.png)
+
+* Tercero agregamos el campo a las recetas:
+  
+  ![image](https://user-images.githubusercontent.com/84333525/139678656-8e58de1a-3d56-4d21-afa5-4595c0e1a37b.png)
+
+* Cuarto corremos las migraciones.
+
+### ADICIONAR IMAGENES A LAS RECETAS
+* Primero creamos el test para esta funcionalidad
+* Hacemos las importaciones necesarias para el trabajo con imágenes
+
+![image](https://user-images.githubusercontent.com/84333525/139680137-539c5686-8ab6-4321-be38-be4147cc83cd.png)
+
+* Creamos una función de prueba que nos retorne la url
+
+![image](https://user-images.githubusercontent.com/84333525/139680287-a992c40f-ff6b-423f-a743-5ff9b099ecaa.png)
+
+* Creamos una clase nueva dónde definimos las pruebas relacionadas con las imágenes, le definimos su función setUp como de costumbre y demás métodos según los test que se vayan a realizar.
+
+![image](https://user-images.githubusercontent.com/84333525/139683033-c89cf4bb-314d-4cf9-968b-554a1e17c1fd.png)
+
+* Creamos un nuevo test para cuando no se puede subir la imágen.
+  
+  ![image](https://user-images.githubusercontent.com/84333525/139683741-40ac4536-3c95-4b46-b9db-42d411ba12d6.png)
+
+### MODIFICAMOS SERIALIZER
+* Debemos crear un recipe_image_serializer, porque debemos ser capaz de serializar las imágenes subidas.
+
+![image](https://user-images.githubusercontent.com/84333525/139684554-1d140302-a48d-4578-801c-bde4741f6d04.png)
+
+### MODIFICAMOS LA VISTA (VIEW)
+* Hacemos las importanciones necesarias:
+
+  ![image](https://user-images.githubusercontent.com/84333525/139686875-dd7b0f67-3e4a-491c-a0af-61b227723644.png)
+
+* Creamos el método para la funcionalidad de subir imágenes:
+
+  ![image](https://user-images.githubusercontent.com/84333525/139686983-78dfb218-a704-457e-86dd-e293a9268246.png)
+  
+* Modificamos la clase get_serializer:
+
+  ![image](https://user-images.githubusercontent.com/84333525/139687080-e96eb16f-4cd2-4e26-9747-13c296bf6717.png)
+
+## ADICIONAR LA FUNCIONALIDAD DE PODER FILTRAR LAS RECETAS POR INGREDIENTES
+* Para ello comenzamos por los test como de costumbre :)
+  
+  ![image](https://user-images.githubusercontent.com/84333525/139693657-57994e0a-1497-4f0f-bb39-7b79b95fa8ce.png)
+
+## MODIFICAMOS LA VISTA PARA FILTRAR
+* Estudiar esto con más tiempo para tener una mejor comprensión, al momento de ver el curso no entendí nada, además que los test no me corrieron por lo que tuve que comentarlos :(
+
+![image](https://user-images.githubusercontent.com/84333525/139714442-7ecd3209-4da4-4d1a-8897-5c6d7d92cb5c.png)
+
+## AGREGAR FILTROS DE TAGS E INGREDIENTES
+### CREAR LOS TEST
+* En amobos casos importamos el modelo de Recipe a los test
+
+![image](https://user-images.githubusercontent.com/84333525/139714732-396b9471-dbd8-4243-9178-a5600b8cbb6e.png)
+
+* Creamos los tests para los tags:
+
+![image](https://user-images.githubusercontent.com/84333525/139715923-443f2387-d597-4d77-9344-7b8c7d40d28e.png)
+
+
+![image](https://user-images.githubusercontent.com/84333525/139717075-8b22e7a2-fbb0-448f-8d72-5ffee3e5a002.png)
+
+
+## ADICIONAR FUNCIONALIDAD PARA FILTRAR POR TAGS E INGREDIENTES
+### MODIFICAMOS LA VISTA 
+* Se le adiciona el siguiente código al metódo get_queryset() de los viewsets
+
+![image](https://user-images.githubusercontent.com/84333525/139719093-b2dc692b-c6cb-44b9-92f7-0d2707059604.png)
+
+
+## OBSERVACION SOBRE INSTALACION DE PAQUETES:
+* Cuando estamos trabajando y no es un proyecto personal, recomiendo usar el .txt requirements para poner los paquetes y la versión de los mismos, así el que vaya a a utilizar la app solo tendrá que usar el comando: *pip install -r requirements.txt* y ya se le descargarán los paquetes necesarios.
+
+
